@@ -17,11 +17,11 @@ class PostTableSeeder extends Seeder
     {
         $faker = Faker::create('App\Models\Post');
 
-        for($i = 1 ; $i <= 20 ; $i++) {
-
+        for($i = 1 ; $i <= 3 ; $i++) {
             DB::table('posts')->insert([
                 'title' => $faker->sentence(),
                 'category_id' => 1,
+                'is_highlighted' => $i === 1,
                 'body' => $faker->paragraph(),
                 'created_by' => 1,
                 'is_published' => 1,

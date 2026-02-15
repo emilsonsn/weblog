@@ -81,6 +81,7 @@ class Post extends Model
             return $query->where('title', 'like', "%$search%")
                 ->orWhere('body', 'like', "%$search%");
         })
+            ->where('is_highlighted', 0)
             ->with('tags', 'category', 'user')
             ->withCount('comments')
             ->published();

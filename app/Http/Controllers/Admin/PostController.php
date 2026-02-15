@@ -67,6 +67,7 @@ class PostController extends Controller
         $post = new Post();
         $post->title = $request->title;
         $post->category_id = $request->category;
+        $post->is_highlighted = !! (int) $request->is_highlighted;
         $post->body = $request->body;
         $post->thumbnail = $fileName;
         $post->is_published = 1;
@@ -131,6 +132,7 @@ class PostController extends Controller
 
         $post->title = $request->title;
         $post->category_id = $request->category;
+        $post->is_highlighted = !! (int) $request->is_highlighted;
         $post->body = $request->description;
         $post->thumbnail = $fileName ?? $post->thumbnail;
 

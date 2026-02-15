@@ -13,6 +13,7 @@ class Post extends Model
         'body',
         'user_id',
         'category_id',
+        'is_highlighted',
         'is_published',
         'read_count',
     ];
@@ -58,6 +59,11 @@ class Post extends Model
         return $query->where('is_published', 1);
     }
 
+    public function scopeHighlighted($query)
+    {
+        return $query->where('is_highlighted', 1);
+    }
+
     public function scopeDrafted($query)
     {
         return $query->where('is_published', 0);
@@ -78,6 +84,11 @@ class Post extends Model
             ->with('tags', 'category', 'user')
             ->withCount('comments')
             ->published();
+    }
+
+    public function getHighlightedPosts()
+    {
+        return self::highlighted()->with('category', 'user')->get();
     }
 
     public function incrementReadCount()

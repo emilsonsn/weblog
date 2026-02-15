@@ -13,9 +13,12 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $posts = (new \App\Models\Post)->getAllPosts($request)->paginate(15);
+        $postModel = new \App\Models\Post;
 
-        return view('welcome', compact('posts'));
+        $highlightedPosts = $postModel->getHighlightedPosts();
+        $posts = $postModel->getAllPosts($request)->paginate(15);
+
+        return view('welcome', compact('posts', 'highlightedPosts'));
     }
 
     public function singlePost($id)

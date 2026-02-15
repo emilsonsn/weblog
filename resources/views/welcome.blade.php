@@ -8,7 +8,6 @@
                     <h1 class="fw-bold my-3">
                         {{ config('devstarit.app_desc') }}
                     </h1>
-                    <h2 class="">Latest Blog Posts</h2>
                 </header>
             </div>
             @include('blog.posts')

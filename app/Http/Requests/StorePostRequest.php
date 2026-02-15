@@ -27,6 +27,7 @@ class StorePostRequest extends FormRequest
             'title'       => 'required',
             'thumbnail' => 'required',
             'category' => 'required',
+            'is_highlighted' => 'boolean',
             'body' => 'required',
             'tags*'        => 'required',
         ];

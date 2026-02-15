@@ -26,6 +26,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => 'required',
             'category' => 'required',
+            'is_highlighted' => 'boolean',
             'description' => 'required',
             'tags' => 'required',
         ];

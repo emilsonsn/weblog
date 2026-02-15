@@ -44,6 +44,17 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="is_highlighted">Destaque?</label>
+                    <input type="checkbox" class="form-check-input @error('is_highlighted') is-invalid @enderror" name="is_highlighted"
+                        id="is_highlighted" value="1" {{ $post->is_highlighted ? 'checked' : '' }}>
+                    @error('is_highlighted')
+                    <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                    @enderror
+                </div>                
+
+                <div class="mb-3">
                     <label for="summernote">Description</label>
                     <textarea type="text" class="form-control @error('description') is-invalid @enderror" name="description"
                         id="summernote" placeholder="Enter Description">{{ $post->body }}</textarea>

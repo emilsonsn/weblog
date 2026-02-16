@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $fillable = [
-        'title',
-        'body',
         'user_id',
         'category_id',
         'is_highlighted',
@@ -87,17 +85,22 @@ class Post extends Model
 
     public function scopeAllPosts($query, $request)
     {
+        $locale = locale();
+
         return $query->latest()
-            ->when($request->search, function ($query) use ($request) {
+            ->when($request->search, function ($query) use ($request, $locale) {
                 $search = $request->search;
 
-                return $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', "%$search%")
-                        ->orWhere('body', 'like', "%$search%");
+                return $query->whereHas('translations', function ($q) use ($search, $locale) {
+                    $q->where('locale', $locale)
+                    ->where(function ($qq) use ($search) {
+                        $qq->where('title', 'like', "%$search%")
+                            ->orWhere('body', 'like', "%$search%");
+                    });
                 });
             })
             ->where('is_highlighted', 0)
-            ->with('tags', 'category', 'user', 'translations')
+            ->with(['tags', 'category', 'user', 'translations'])
             ->withCount('comments')
             ->published();
     }

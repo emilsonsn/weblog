@@ -47,7 +47,7 @@ class HomeController extends Controller
             })
             ->paginate(15);
 
-        $highlightedPosts = [];
+        $highlightedPosts = Post::highlightedPosts()->get();
 
         return view('welcome', compact('posts', 'highlightedPosts'));
     }

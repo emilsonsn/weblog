@@ -14,10 +14,26 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('categories')->insert([
-            'title' => 'Web Development',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // categorias pra um blog de programação e portifolio
+        $categories = [
+            'Insights',
+            'Tech',
+            'Programming',
+            'Career',
+            'Personal Development',
+            'Projects',
+            'Tutorials',
+            'Reviews',
+            'Industry Trends',
+            'Work-Life Balance',
+        ];
+
+        foreach ($categories as $category) {
+            DB::table('categories')->insert([
+                'title' => $category,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

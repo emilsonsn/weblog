@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cookie;
 
 class Post extends Model
 {
@@ -62,6 +60,7 @@ class Post extends Model
     public function translation($locale = null)
     {
         $locale = $locale ?? locale();
+
         return $this->translations->where('locale', $locale)->first()
             ?? $this->translations->where('locale', 'pt')->first();
     }
@@ -86,27 +85,32 @@ class Post extends Model
         return ($this->is_published) ? 'Yes' : 'No';
     }
 
-    public function getAllPosts($request)
+    public function scopeAllPosts($query, $request)
     {
-        return self::latest()->when($request->search, function ($query) use ($request) {
-            $search = $request->search;
-            return $query->where('title', 'like', "%$search%")
-                ->orWhere('body', 'like', "%$search%");
-        })
+        return $query->latest()
+            ->when($request->search, function ($query) use ($request) {
+                $search = $request->search;
+
+                return $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%$search%")
+                        ->orWhere('body', 'like', "%$search%");
+                });
+            })
             ->where('is_highlighted', 0)
-            ->with('tags', 'category', 'user')
+            ->with('tags', 'category', 'user', 'translations')
             ->withCount('comments')
             ->published();
     }
 
-    public function getHighlightedPosts()
+    public function scopeHighlightedPosts($query)
     {
-        return self::highlighted()->with('category', 'user')->get();
+        return $query->highlighted()->with('category', 'user', 'translations');
     }
 
     public function incrementReadCount()
     {
         $this->read_count++;
+
         return $this->save();
     }
 

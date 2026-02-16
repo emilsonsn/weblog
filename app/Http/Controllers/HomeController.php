@@ -3,26 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
-use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $postModel = new \App\Models\Post;
+        $posts = Post::allPosts($request)->paginate(9);
 
-        $posts = Post::with('translations','user','category')
-            ->where('is_highlighted', 0)
-            ->latest()
-            ->paginate(9);
-        
-        $highlightedPosts = Post::with('translations')
-            ->where('is_highlighted',1)
-            ->get();
+        $highlightedPosts = Post::highlightedPosts()->get();
 
         return view('welcome', compact('posts', 'highlightedPosts'));
     }
@@ -30,8 +21,8 @@ class HomeController extends Controller
     public function singlePost($locale, $id)
     {
         $post = Post::with('comments.user', 'tags', 'user', 'category')->findOrFail($id);
-        $key = 'blog_post_' . $post->id;
-        if (!session($key)) {
+        $key = 'blog_post_'.$post->id;
+        if (! session($key)) {
             Session::put($key, 1);
             $post->incrementReadCount();
         }
@@ -41,7 +32,7 @@ class HomeController extends Controller
 
     public function categoryPosts(Request $request, $id)
     {
-        $posts = (new Post)->getAllPosts($request)
+        $posts = (new Post)->allPosts($request)
             ->where('category_id', $id)
             ->paginate(15);
 
@@ -50,7 +41,7 @@ class HomeController extends Controller
 
     public function tagPosts(Request $request, $id)
     {
-        $posts = (new Post)->getAllPosts($request)
+        $posts = (new Post)->allPosts($request)
             ->whereHas('tags', function ($q) use ($id) {
                 $q->where('tag_id', $id);
             })

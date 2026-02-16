@@ -118,6 +118,15 @@
                                 <button class="btn btn-outline-primary" type="submit">{{ isEn() ? 'Search' : 'Buscar' }}</button>
                             </form>
                         </li>
+
+                        <li class="nav-item me-2">
+                            <form id="locale-form" class="ms-3">
+                                <select class="form-select form-select-sm" onchange="changeLocale(this.value)">
+                                    <option value="pt" {{ app()->getLocale() == 'pt' ? 'selected' : '' }}>PT</option>
+                                    <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>EN</option>
+                                </select>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -135,3 +144,22 @@
     </div>
 </body>
 </html>
+
+<script>
+function changeLocale(locale) {
+    let path = window.location.pathname.split('/').filter(Boolean);
+
+    if (path.length === 0) {
+        window.location.href = '/' + locale;
+        return;
+    }
+
+    if (['pt','en'].includes(path[0])) {
+        path[0] = locale;
+    } else {
+        path.unshift(locale);
+    }
+
+    window.location.href = '/' + path.join('/');
+}
+</script>

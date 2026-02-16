@@ -31,7 +31,7 @@
                     @if ($post->tags->count() > 0)
                         <div class="mb-4">
                             @foreach ($post->tags as $tag)
-                                <a href="{{ route('tag.posts', $tag->id) }}"
+                                <a href="{{ route('tag.posts', ['id' => $tag->id, 'locale' => locale()]) }}"
                                    class="badge bg-secondary text-decoration-none me-1">
                                     #{{ $tag->title }}
                                 </a>

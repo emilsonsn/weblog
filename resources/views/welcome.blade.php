@@ -6,7 +6,7 @@
             <div class="position-relative justify-content-center py-4">
                 <header class="text-center text-white">
                     <h1 class="fw-bold my-3">
-                        {{ isEn() ? 'Exploring technology, programming, and innovation' : 'Explorando tecnologia, programação e inovação' }}
+                        {{ isEn() ? 'Exploring technology, programming, and innovation.' : 'Explorando tecnologia, programação e inovação.' }}
                         
                     </h1>
                 </header>

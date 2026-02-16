@@ -47,7 +47,9 @@ class HomeController extends Controller
             })
             ->paginate(15);
 
-        return view('welcome', compact('posts'));
+        $highlightedPosts = [];
+
+        return view('welcome', compact('posts', 'highlightedPosts'));
     }
 
     public function comment(StoreCommentRequest $request, Post $post)

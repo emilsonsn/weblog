@@ -15,8 +15,14 @@ class HomeController extends Controller
     {
         $postModel = new \App\Models\Post;
 
-        $posts = Post::with('translations','user','category')->latest()->paginate(9);
-        $highlightedPosts = Post::with('translations')->where('is_highlighted',1)->get();
+        $posts = Post::with('translations','user','category')
+            ->where('is_highlighted', 0)
+            ->latest()
+            ->paginate(9);
+        
+        $highlightedPosts = Post::with('translations')
+            ->where('is_highlighted',1)
+            ->get();
 
         return view('welcome', compact('posts', 'highlightedPosts'));
     }

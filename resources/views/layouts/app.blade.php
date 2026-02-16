@@ -111,17 +111,12 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto align-items-center">
+                    <ul class="navbar-nav ms-auto align-items-center mt-2">
                         <li class="nav-item">
                             <form class="d-flex search-box" role="search" action="{{ route('home.index', ['locale' => locale()]) }}">
                                 <input class="form-control me-2" type="search" name="search" placeholder="{{ isEn() ? 'Search articles...' : 'Buscar artigos...' }}" value="{{ request('search') }}">
                                 <button class="btn btn-outline-primary" type="submit">{{ isEn() ? 'Search' : 'Buscar' }}</button>
-                            </form>
-                        </li>
-
-                        <li class="nav-item me-2">
-                            <form id="locale-form" class="ms-3">
-                                <select class="form-select form-select-sm" onchange="changeLocale(this.value)">
+                                <select style="max-width: 80px" class="form-select form-select-sm ms-2" onchange="changeLocale(this.value)">
                                     <option value="pt" {{ app()->getLocale() == 'pt' ? 'selected' : '' }}>PT</option>
                                     <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>EN</option>
                                 </select>

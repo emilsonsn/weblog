@@ -6,7 +6,8 @@
             <div class="position-relative justify-content-center py-4">
                 <header class="text-center text-white">
                     <h1 class="fw-bold my-3">
-                        {{ config('devstarit.app_desc') }}
+                        {{ isEn() ? 'Exploring technology, programming, and innovation' : 'Explorando tecnologia, programação e inovação' }}
+                        
                     </h1>
                 </header>
             </div>

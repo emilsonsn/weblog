@@ -12,7 +12,7 @@ class PostTableSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             $postId = DB::table('posts')->insertGetId([
                 'category_id' => 1,
                 'is_highlighted' => $i === 1,

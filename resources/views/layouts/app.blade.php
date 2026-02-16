@@ -113,9 +113,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto align-items-center">
                         <li class="nav-item">
-                            <form class="d-flex search-box" role="search" action="{{ route('home.index') }}">
-                                <input class="form-control me-2" type="search" name="search" placeholder="Buscar artigos...">
-                                <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                            <form class="d-flex search-box" role="search" action="{{ route('home.index', ['locale' => locale()]) }}">
+                                <input class="form-control me-2" type="search" name="search" placeholder="{{ isEn() ? 'Search articles...' : 'Buscar artigos...' }}" value="{{ request('search') }}">
+                                <button class="btn btn-outline-primary" type="submit">{{ isEn() ? 'Search' : 'Buscar' }}</button>
                             </form>
                         </li>
                     </ul>
@@ -130,7 +130,7 @@
         </main>
 
         <footer>
-            © {{ date('Y') }} {{ config('devstarit.app_name') }} • Conteúdo sobre programação e tecnologia
+            © {{ date('Y') }} {{ config('devstarit.app_name') }} • {{ isEn() ? 'Content about programming and technology.' : 'Conteúdo sobre programação e tecnologia' }}
         </footer>
     </div>
 </body>

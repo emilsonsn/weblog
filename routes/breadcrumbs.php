@@ -28,8 +28,9 @@ Breadcrumbs::for('admin.posts.create', function (BreadcrumbTrail $trail): void {
 Breadcrumbs::for('admin.posts.edit', function (BreadcrumbTrail $trail, Post $post): void {
     $trail->parent('admin.posts.index');
 
-    $trail->push($post->title, route('admin.posts.edit', $post));
+    $trail->push($post->translation('pt')->title ?? 'Post', route('admin.posts.edit', $post));
 });
+
 // Category
 Breadcrumbs::for('admin.categories.index', function (BreadcrumbTrail $trail): void {
     $trail->parent('admin.index');

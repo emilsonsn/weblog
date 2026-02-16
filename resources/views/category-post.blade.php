@@ -28,7 +28,7 @@
                             <p class="card-text">{{ $post->title }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a href="{{ route('singlePost', $post->id) }}"
+                                    <a href="{{ route('singlePost', [locale(), $post->id]) }}"
                                         class="btn btn-sm btn-outline-secondary">View</a>
                                     {{-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> --}}
                                 </div>

@@ -15,13 +15,13 @@ class HomeController extends Controller
     {
         $postModel = new \App\Models\Post;
 
-        $highlightedPosts = $postModel->getHighlightedPosts();
-        $posts = $postModel->getAllPosts($request)->paginate(15);
+        $posts = Post::with('translations','user','category')->latest()->paginate(9);
+        $highlightedPosts = Post::with('translations')->where('is_highlighted',1)->get();
 
         return view('welcome', compact('posts', 'highlightedPosts'));
     }
 
-    public function singlePost($id)
+    public function singlePost($locale, $id)
     {
         $post = Post::with('comments.user', 'tags', 'user', 'category')->findOrFail($id);
         $key = 'blog_post_' . $post->id;

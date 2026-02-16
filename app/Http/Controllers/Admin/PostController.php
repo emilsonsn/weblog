@@ -7,6 +7,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\PostTranslation;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,27 +65,36 @@ class PostController extends Controller
             $thumbnail->storeAs('uploads/posts', $fileName, 'public');
         }
 
-        $post = new Post();
-        $post->title = $request->title;
-        $post->category_id = $request->category;
-        $post->is_highlighted = !! (int) $request->is_highlighted;
-        $post->body = $request->body;
-        $post->thumbnail = $fileName;
-        $post->is_published = 1;
+        $post = Post::create([
+            'category_id' => $request->category,
+            'is_highlighted' => !! (int) $request->is_highlighted,
+            'thumbnail' => $fileName,
+            'is_published' => 1,
+        ]);
 
-        if ($post->save()) {
-            $tagsId = collect($request->tags)->map(function ($tag) {
-                return Tag::firstOrCreate(['title' => $tag])->id;
-            });
+        PostTranslation::create([
+            'post_id' => $post->id,
+            'locale' => 'pt',
+            'title' => $request->title_pt,
+            'body' => $request->body_pt,
+        ]);
 
-            $post->tags()->attach($tagsId);
+        PostTranslation::create([
+            'post_id' => $post->id,
+            'locale' => 'en',
+            'title' => $request->title_en,
+            'body' => $request->body_en,
+        ]);
 
-            return redirect()->route('admin.posts.index')->with('message', 'Post successfully saved');
-        }
+        $tagsId = collect($request->tags)->map(function ($tag) {
+            return Tag::firstOrCreate(['title' => $tag])->id;
+        });
 
-        return redirect()->back()->with('message', 'Whoops! something went wrong!');
+        $post->tags()->attach($tagsId);
+
+        return redirect()->route('admin.posts.index', ['locale' => locale()])
+            ->with('message', 'Post saved with translations');
     }
-
     /**
      * Display the specified resource.
      *
@@ -128,24 +138,30 @@ class PostController extends Controller
             $thumbnail = $request->file('thumbnail');
             $fileName = time() . '.' . $thumbnail->getClientOriginalExtension();
             $thumbnail->storeAs('uploads/posts', $fileName, 'public');
+            $post->thumbnail = $fileName;
         }
 
-        $post->title = $request->title;
         $post->category_id = $request->category;
         $post->is_highlighted = !! (int) $request->is_highlighted;
-        $post->body = $request->description;
-        $post->thumbnail = $fileName ?? $post->thumbnail;
+        $post->save();
 
-        if ($post->save()){
-            $tagsId = collect($request->tags)->map(function ($tag) {
-                return Tag::firstOrCreate(['title' => $tag])->id;
-            });
+        PostTranslation::updateOrCreate(
+            ['post_id' => $post->id, 'locale' => 'pt'],
+            ['title' => $request->title_pt, 'body' => $request->body_pt]
+        );
 
-            $post->tags()->sync($tagsId);
+        PostTranslation::updateOrCreate(
+            ['post_id' => $post->id, 'locale' => 'en'],
+            ['title' => $request->title_en, 'body' => $request->body_en]
+        );
 
-            return redirect()->back()->with('message','Post updated successfully');
-        }
-        return redirect()->back()->with('error','Whoops!!');
+        $tagsId = collect($request->tags)->map(function ($tag) {
+            return Tag::firstOrCreate(['title' => $tag])->id;
+        });
+
+        $post->tags()->sync($tagsId);
+
+        return redirect()->back()->with('message', 'Post updated successfully');
     }
 
     /**

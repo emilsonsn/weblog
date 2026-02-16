@@ -8,16 +8,21 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::get('post/{id}', [HomeController::class, 'singlePost'])->name('singlePost');
-Route::get('category-posts/{id}', [HomeController::class, 'categoryPosts'])->name('category.posts');
-Route::get('tag-posts/{id}', [HomeController::class, 'tagPosts'])->name('tag.posts');
-Route::post('comment/{post}', [HomeController::class, 'comment'])->name('comment.save')->middleware('auth');
-
-Auth::routes();
+Route::middleware('setLocale')
+->prefix('{locale}')
+->where(['locale' => 'pt|en'])
+->group( function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::get('post/{id}', [HomeController::class, 'singlePost'])->name('singlePost');
+    Route::get('category-posts/{id}', [HomeController::class, 'categoryPosts'])->name('category.posts');
+    Route::get('tag-posts/{id}', [HomeController::class, 'tagPosts'])->name('tag.posts');
+    Route::post('comment/{post}', [HomeController::class, 'comment'])
+        ->name('comment.save')->middleware('auth');
+});
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
@@ -36,3 +41,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('change-password', [ProfileController::class, 'password'])->name('password.index');
     Route::put('update-password', [ProfileController::class, 'updatePassword'])->name('password.update');
 });
+
+Route::get('/', function(){
+    return redirect()->route('home.index', ['locale' => locale()]);
+});
+
+Auth::routes();
+

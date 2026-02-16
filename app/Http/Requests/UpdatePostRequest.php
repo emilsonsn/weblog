@@ -24,11 +24,15 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
+            'title_pt' => 'required|string|max:255',
+            'body_pt' => 'required|string',
+
+            'title_en' => 'nullable|string|max:255',
+            'body_en' => 'nullable|string',
+
             'category' => 'required',
             'is_highlighted' => 'boolean',
-            'description' => 'required',
-            'tags' => 'required',
+            'tags*'        => 'required',
         ];
     }
 }

@@ -14,7 +14,7 @@
 
                 <div class="p-4 p-md-5">
 
-                    <h1 class="fw-bold mb-3">{{ $post->title }}</h1>
+                    <h1 class="fw-bold mb-3">{{ $post->translation()->title }}</h1>
 
                     <div class="d-flex flex-wrap gap-2 small text-secondary mb-4">
                         <span>Por <strong class="text-light">{{ optional($post->user)->name }}</strong></span>
@@ -22,7 +22,7 @@
                         <span>{{ $post->created_at->format('d/m/Y H:i') }}</span>
                         <span>•</span>
                         <span>Categoria:
-                            <a href="{{ route('category.posts', $post->category_id) }}" class="text-decoration-none text-info">
+                            <a href="{{ route('category.posts',  ['id' => $post->category_id, 'locale' => locale()]) }}" class="text-decoration-none text-info">
                                 {{ optional($post->category)->title }}
                             </a>
                         </span>
@@ -40,7 +40,7 @@
                     @endif
 
                     <div class="post-body fs-5 lh-lg">
-                        {!! $post->body !!}
+                        {!! $post->translation()->body !!}
                     </div>
                 </div>
             </article>

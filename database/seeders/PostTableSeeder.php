@@ -8,25 +8,37 @@ use Faker\Factory as Faker;
 
 class PostTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        $faker = Faker::create('App\Models\Post');
+        $faker = Faker::create();
 
-        for($i = 1 ; $i <= 3 ; $i++) {
-            DB::table('posts')->insert([
-                'title' => $faker->sentence(),
+        for ($i = 1; $i <= 3; $i++) {
+            $postId = DB::table('posts')->insertGetId([
                 'category_id' => 1,
                 'is_highlighted' => $i === 1,
-                'body' => $faker->paragraph(),
                 'created_by' => 1,
                 'is_published' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
+            ]);
+
+            DB::table('post_translations')->insert([
+                [
+                    'post_id' => $postId,
+                    'locale' => 'pt',
+                    'title' => $faker->sentence(),
+                    'body' => $faker->paragraph(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+                [
+                    'post_id' => $postId,
+                    'locale' => 'en',
+                    'title' => $faker->sentence(),
+                    'body' => $faker->paragraph(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
             ]);
         }
     }

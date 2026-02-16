@@ -54,6 +54,18 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function translations()
+    {
+        return $this->hasMany(PostTranslation::class);
+    }
+
+    public function translation($locale = null)
+    {
+        $locale = $locale ?? locale();
+        return $this->translations->where('locale', $locale)->first()
+            ?? $this->translations->where('locale', 'pt')->first();
+    }
+
     public function scopePublished($query)
     {
         return $query->where('is_published', 1);

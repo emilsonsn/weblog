@@ -16,80 +16,35 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .min-h-screen {
-            min-height: 100vh;
-        }
-        .bg-gray-900 {
-            background: linear-gradient(180deg,#0f172a 0%,#020617 100%);
-        }
-        .bg-dark {
-            background-color: #020617 !important;
-            border-bottom: 1px solid #1f2937;
-        }
-        .navbar-brand {
-            font-weight: 700;
-            letter-spacing: .5px;
-        }
-        .nav-link {
-            color: #e5e7eb !important;
-        }
-        .nav-link:hover {
-            color: #60a5fa !important;
-        }
-        .search-box input {
-            background: #020617;
-            border: 1px solid #1f2937;
-            color: #e5e7eb;
-        }
-        .search-box input::placeholder{
-            color: #9ca3af;
-        }
-        .search-box input:focus {
-            border-color: #2563eb;
-            box-shadow: none;
-        }
-        .search-box button {
-            border-color: #2563eb;
-            color: #60a5fa;
-        }
-        .search-box button:hover {
-            background: #2563eb;
-            color: #fff;
-        }
-        .max-w-7xl {
-            max-width: 1100px;
-        }
-        .text-gray-400 {
-            color: #9ca3af;
-        }
-        .pagination {
-            justify-content: center;
-        }
+        body{font-family:'Inter',sans-serif; margin:0}
+        .min-h-screen{min-height:100vh;}
+        .bg-gray-900{background:linear-gradient(180deg,#0f172a 0%,#020617 100%);}
+        .bg-dark{background-color:#020617 !important;border-bottom:1px solid #1f2937;}
+        .navbar-brand{font-weight:700;letter-spacing:.5px;}
+        .nav-link{color:#e5e7eb !important;}
+        .nav-link:hover{color:#60a5fa !important;}
+        .search-box input{background:#020617;border:1px solid #1f2937;color:#e5e7eb;}
+        .search-box input::placeholder{color:#9ca3af;}
+        .search-box input:focus{border-color:#2563eb;box-shadow:none;}
+        .search-box button{border-color:#2563eb;color:#60a5fa;}
+        .search-box button:hover{background:#2563eb;color:#fff;}
+        .max-w-7xl{max-width:1100px;}
+        .text-gray-400{color:#9ca3af;}
+        .pagination{justify-content:center;}
+        footer{border-top:1px solid #1f2937;margin-top:60px;padding:25px 0;text-align:center;color:#6b7280;font-size:14px;}
+        .image-circle{width:40px;height:40px;border-radius:50%;overflow:hidden;display:inline-block;margin-right:10px;}
+        .image-circle img{width:100%;height:100%;object-fit:cover;}
 
-        footer {
-            border-top: 1px solid #1f2937;
-            margin-top: 60px;
-            padding: 25px 0;
-            text-align: center;
-            color: #6b7280;
-            font-size: 14px;
+        .navbar{
+            position:fixed;
+            top:0;
+            left:0;
+            right:0;
+            height: 90px;
+            z-index:1050;
         }
-
-        .image-circle{
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: inline-block;
-            margin-right: 10px;
-        }
-         .image-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .main-content{
+            margin-top:90px;
         }
     </style>
 </head>
@@ -127,15 +82,17 @@
             </div>
         </nav>
 
-        <main class="py-5">
-            <div class="container max-w-7xl">
-                @yield('content')
-            </div>
-        </main>
+        <div class="main-content">
+            <main class="py-5">
+                <div class="container max-w-7xl">
+                    @yield('content')
+                </div>
+            </main>
 
-        <footer>
-            © {{ date('Y') }} {{ config('devstarit.app_name') }} • {{ isEn() ? 'Content about programming and technology.' : 'Conteúdo sobre programação e tecnologia' }}
-        </footer>
+            <footer>
+                © {{ date('Y') }} {{ config('devstarit.app_name') }} • {{ isEn() ? 'Content about programming and technology.' : 'Conteúdo sobre programação e tecnologia' }}
+            </footer>
+        </div>
     </div>
 </body>
 </html>
